@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Sweetdrop</title>
+  <!--[if lt IE 9]> <script src="html5shiv.js"></script> <![endif]-->
+	<link rel="stylesheet" type="text/css" href='dropzone.css'>
+	<link rel="stylesheet" type="text/css" href='style.css'>
+</head>
+<body>
+
+	<h1><a href='https://github.com/JonahBraun/sweetdrop'>Sweetdrop</a> // individual file sharing</h1>
+	<noscript>Gr33tings Lynx user! You can <a href='f/'>browse files manually in text mode</a>.</noscript>
+
+	<form action="/upload" class="dropzone" enctype="multipart/form-data" method="post">
+		<div class="fallback">
+			<input name="file" type="file" multiple>
+			<input type="submit" value="upload">
+		</div>
+	</form>
+	<div id='react'></div>
+
+
+	<script src='dropzone.js'></script>
+	<script src='react.min.js'></script>
+	<script src='react-dom.min.js'></script>
+	<script src='script.js'></script>
+
+</body>
+</html>
