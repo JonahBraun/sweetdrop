@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func indexPage(w http.ResponseWriter, req *http.Request) {
@@ -39,4 +41,29 @@ func indexPage(w http.ResponseWriter, req *http.Request) {
 	if err != nil && err != filepath.SkipDir {
 		log.Fatal("Error walking dir: ", err)
 	}
+}
+
+// upload logic
+func upload(w http.ResponseWriter, r *http.Request) {
+	log.Println("Incoming from", r.RemoteAddr)
+	r.ParseMultipartForm(32 << 20)
+
+	formfile, header, err := r.FormFile("file")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	defer formfile.Close()
+
+	// sanitize before saving
+	// TODO strip escape codes and other dangerous char code points
+	name := strings.Replace(header.Filename, string(os.PathSeparator), "-", -1)
+
+	f, err := os.OpenFile(*rootDir+"/"+name, os.O_WRONLY|os.O_CREATE, 0666)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	defer f.Close()
+	io.Copy(f, formfile)
 }

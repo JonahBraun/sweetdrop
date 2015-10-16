@@ -47,6 +47,7 @@ func randSeq(n int) string {
 func startWebServer() {
 	key := "/" + *accessKey + "/"
 	mux := http.NewServeMux()
+	mux.HandleFunc(key+"upload", upload)
 	mux.Handle(key, http.StripPrefix(key, http.FileServer(assetFS())))
 	mux.Handle(key+"f/", http.StripPrefix(key+"f/", http.FileServer(http.Dir(*rootDir))))
 
